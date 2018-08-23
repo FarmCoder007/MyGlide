@@ -6,6 +6,7 @@ import java.io.File;
 
 public class FileUtils {
     public static final String BASE_LOCAL = Environment.getExternalStorageDirectory().getPath() + "/" + "MyGlide/myCache/";
+//    public static final String BASE_LOCAL = Environment.getExternalStorageDirectory().getPath() + File.separator + "DouTuiComic/glide_cache";
 
     /**
      * 文件重命名

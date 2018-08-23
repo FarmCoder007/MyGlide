@@ -47,6 +47,7 @@ public class ImageBinderUtils {
                 .with(imageView.getContext().getApplicationContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.ic_launcher_background)  // 获取资源前占位符
+                .skipMemoryCache(true)
                 .into(imageView);
         Log.e("flag", "-------------------------bindNetImage--" + imageUrl);
     }
@@ -316,7 +317,7 @@ public class ImageBinderUtils {
 
     /**
      * recyclerView  加载列表    预缓存方法二：  download  【必须子线程】  安照DiskCacheStrategy.RESOURCE缓存
-     * 加载的时候不写diskCacheStrategy  或者 .diskCacheStrategy(DiskCacheStrategy.RESOURCE) 可使用预先缓存好的
+     * 加载的时候不写diskCacheStrategy 可使用预先缓存好的    【必须不写】
      * download  在子线程中执行
      *
      * @param context
@@ -329,8 +330,10 @@ public class ImageBinderUtils {
                     .download(url)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE).getDownloadOnlyRequest().submit();
             final File imageFile = target.get();
+            Log.e("flag", "------------------前-" + imageFile.getPath());
             FileUtils.renameFile(imageFile.getPath(), FileUtils.BASE_LOCAL + imageFile.getName());
             Log.e("flag", "-------------------" + imageFile.getPath());
+            Log.e("flag", "--------------------------------------");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("flag", "-------------------Exception" + e.getMessage());

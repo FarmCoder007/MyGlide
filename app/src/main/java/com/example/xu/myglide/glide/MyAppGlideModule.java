@@ -3,6 +3,7 @@ package com.example.xu.myglide.glide;
 import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
@@ -13,7 +14,9 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
 import com.bumptech.glide.module.AppGlideModule;
 import com.example.xu.myglide.glide.loader.GlideModelLoaderFactory;
+import com.example.xu.myglide.utils.FileUtils;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -36,7 +39,8 @@ public class MyAppGlideModule extends AppGlideModule {
     }
 
     /**
-     *   GlideBuilder  设置 默认的结构(Engine,BitmapPool ,ArrayPool,MemoryCache DiskCache)
+     * GlideBuilder  设置 默认的结构(Engine,BitmapPool ,ArrayPool,MemoryCache DiskCache)
+     *
      * @param context
      * @param builder
      */
@@ -56,7 +60,7 @@ public class MyAppGlideModule extends AppGlideModule {
         //  磁盘设置一  ：设置内置指定磁盘缓存路径   大小
         int diskCacheSizeBytes = 1024 * 1024 * 20;   // 2M
         builder.setDiskCache(
-                new DiskLruCacheFactory( Environment.getExternalStorageDirectory()+"/MyGlide/myCache", diskCacheSizeBytes));
+                new DiskLruCacheFactory(FileUtils.BASE_LOCAL, diskCacheSizeBytes));
         //  磁盘缓存二   ： 设置外置缓存
 //        int diskCacheSizeBytes = 1024 * 1024 * 100; // 100 MB
 //        builder.setDiskCache(
@@ -65,7 +69,8 @@ public class MyAppGlideModule extends AppGlideModule {
     }
 
     /**
-     *  注册新的加载模式   或 支持新的加载类型
+     * 注册新的加载模式   或 支持新的加载类型
+     *
      * @param context
      * @param glide
      * @param registry
@@ -90,9 +95,9 @@ public class MyAppGlideModule extends AppGlideModule {
          *  你通常想要 prepend【预置】 你的 ModelLoader，
          *  这样 Glide 将在默认的 ModelLoader 之前尝试它。【
          *  GlideApp
-                   .with(imageView.getContext().getApplicationContext())
-                   .load(imageUrl)   load  资源时  会先根据GlideModelLoaderFactory中 我们预置的ProgressModelLoader
-                里handles 方法 判断 此资源是否适用于新的加载方式。。如果不适合就用Glide默认的加载方式】
+         .with(imageView.getContext().getApplicationContext())
+         .load(imageUrl)   load  资源时  会先根据GlideModelLoaderFactory中 我们预置的ProgressModelLoader
+         里handles 方法 判断 此资源是否适用于新的加载方式。。如果不适合就用Glide默认的加载方式】
          */
         registry.prepend(String.class, InputStream.class, new GlideModelLoaderFactory()); // 在现有之前加入追加新的加载方式
     }
