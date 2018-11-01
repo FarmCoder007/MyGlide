@@ -32,6 +32,7 @@ public class GlideRoundTransform extends BitmapTransformation {
 
   public GlideRoundTransform(Context context, int dp) {
     this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
+    // keyi
   }
 
   @Override
